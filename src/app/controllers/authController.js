@@ -54,6 +54,7 @@ router.post('/authenticate', async (req, res) => {
 
 router.post('/forgot_password', async (req, res) => {
     const { email } = req.body;
+    const { user: howdyMail } = require('../../config/mail.json');
 
     try {
         const user = await User.findOne({ email });
@@ -71,10 +72,12 @@ router.post('/forgot_password', async (req, res) => {
             },
         });
 
+        console.log(howdyMail);
+
         mailer.sendMail(
             {
                 to: email,
-                from: '62165ae5d1-9a0cf4 +1@ inbox.mailtrap.io',
+                from: howdyMail,
                 template: 'auth/forgot_password',
                 context: { token },
             },
